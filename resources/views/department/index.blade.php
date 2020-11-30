@@ -110,7 +110,7 @@
     $("ul#hrm #dept-menu").addClass("active");
 
     var department_id = [];
-    var user_verified = <?php echo json_encode(env('USER_VERIFIED')) ?>;
+    var user_verified = <?php echo json_encode(config('app.USER_VERIFIED')) ?>;
     
     $.ajaxSetup({
         headers: {

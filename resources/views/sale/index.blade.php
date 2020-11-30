@@ -351,7 +351,7 @@
     var public_key = <?php echo json_encode($lims_pos_setting_data->stripe_public_key) ?>;
     var all_permission = <?php echo json_encode($all_permission) ?>;
     var sale_id = [];
-    var user_verified = <?php echo json_encode(env('USER_VERIFIED')) ?>;
+    var user_verified = <?php echo json_encode(config('app.USER_VERIFIED')) ?>;
     
     $.ajaxSetup({
         headers: {

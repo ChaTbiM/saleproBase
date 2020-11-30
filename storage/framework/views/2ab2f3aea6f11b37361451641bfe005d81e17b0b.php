@@ -1,84 +1,87 @@
-@extends('layout.main') @section('content')
-@if($errors->has('coupon_no'))
+ <?php $__env->startSection('content'); ?>
+<?php if($errors->has('coupon_no')): ?>
 <div class="alert alert-danger alert-dismissible text-center">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ $errors->first('coupon_no') }}</div>
-@endif
-@if(session()->has('message'))
-  <div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{!! session()->get('message') !!}</div> 
-@endif
-@if(session()->has('not_permitted'))
-  <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session()->get('not_permitted') }}</div> 
-@endif
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?php echo e($errors->first('coupon_no')); ?></div>
+<?php endif; ?>
+<?php if(session()->has('message')): ?>
+  <div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?php echo session()->get('message'); ?></div> 
+<?php endif; ?>
+<?php if(session()->has('not_permitted')): ?>
+  <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?php echo e(session()->get('not_permitted')); ?></div> 
+<?php endif; ?>
 
 <section>
     <div class="container-fluid">
-        <button class="btn btn-info" data-toggle="modal" data-target="#create-modal"><i class="dripicons-plus"></i> {{trans('file.Add Coupon')}}</button>
+        <button class="btn btn-info" data-toggle="modal" data-target="#create-modal"><i class="dripicons-plus"></i> <?php echo e(trans('file.Add Coupon')); ?></button>
     </div>
     <div class="table-responsive">
         <table id="coupon-table" class="table">
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Coupon Code')}}</th>
-                    <th>{{trans('file.Type')}}</th>
-                    <th>{{trans('file.Amount')}}</th>
-                    <th>{{trans('file.Minimum Amount')}}</th>
+                    <th><?php echo e(trans('file.Coupon Code')); ?></th>
+                    <th><?php echo e(trans('file.Type')); ?></th>
+                    <th><?php echo e(trans('file.Amount')); ?></th>
+                    <th><?php echo e(trans('file.Minimum Amount')); ?></th>
                     <th>Qty</th>
-                    <th>{{trans('file.Available')}}</th>
-                    <th>{{trans('file.Expired Date')}}</th>
-                    <th>{{trans('file.Created By')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th>
+                    <th><?php echo e(trans('file.Available')); ?></th>
+                    <th><?php echo e(trans('file.Expired Date')); ?></th>
+                    <th><?php echo e(trans('file.Created By')); ?></th>
+                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($lims_coupon_all as $key=>$coupon)
+                <?php $__currentLoopData = $lims_coupon_all; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$coupon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php 
                     $created_by = DB::table('users')->find($coupon->user_id);
                 ?>
-                <tr data-id="{{$coupon->id}}">
-                    <td>{{$key}}</td>
-                    <td>{{ $coupon->code }}</td>
-                    @if($coupon->type == 'percentage')
-                    <td><div class="badge badge-primary">{{$coupon->type}}</div></td>
-                    @else
-                    <td><div class="badge badge-info">{{$coupon->type}}</div></td>
-                    @endif
-                    <td>{{ $coupon->amount }}</td>
-                    @if($coupon->minimum_amount)
-                    <td>{{ $coupon->minimum_amount }}</td>
-                    @else
+                <tr data-id="<?php echo e($coupon->id); ?>">
+                    <td><?php echo e($key); ?></td>
+                    <td><?php echo e($coupon->code); ?></td>
+                    <?php if($coupon->type == 'percentage'): ?>
+                    <td><div class="badge badge-primary"><?php echo e($coupon->type); ?></div></td>
+                    <?php else: ?>
+                    <td><div class="badge badge-info"><?php echo e($coupon->type); ?></div></td>
+                    <?php endif; ?>
+                    <td><?php echo e($coupon->amount); ?></td>
+                    <?php if($coupon->minimum_amount): ?>
+                    <td><?php echo e($coupon->minimum_amount); ?></td>
+                    <?php else: ?>
                     <td>N/A</td>
-                    @endif
-                    <td>{{ $coupon->quantity }}</td>
-                    @if($coupon->quantity - $coupon->used)
-                    <td class="text-center"><div class="badge badge-success">{{ $coupon->quantity - $coupon->used }}</div></td>
-                    @else
-                    <td class="text-center"><div class="badge badge-danger">{{ $coupon->quantity - $coupon->used }}</div></td>
-                    @endif
-                    @if($coupon->expired_date >= date("Y-m-d"))
-                      <td><div class="badge badge-success">{{date('d-m-Y', strtotime($coupon->expired_date))}}</div></td>
-                    @else
-                      <td><div class="badge badge-danger">{{date('d-m-Y', strtotime($coupon->expired_date))}}</div></td>
-                    @endif
-                    <td>{{ $created_by->name }}</td>
+                    <?php endif; ?>
+                    <td><?php echo e($coupon->quantity); ?></td>
+                    <?php if($coupon->quantity - $coupon->used): ?>
+                    <td class="text-center"><div class="badge badge-success"><?php echo e($coupon->quantity - $coupon->used); ?></div></td>
+                    <?php else: ?>
+                    <td class="text-center"><div class="badge badge-danger"><?php echo e($coupon->quantity - $coupon->used); ?></div></td>
+                    <?php endif; ?>
+                    <?php if($coupon->expired_date >= date("Y-m-d")): ?>
+                      <td><div class="badge badge-success"><?php echo e(date('d-m-Y', strtotime($coupon->expired_date))); ?></div></td>
+                    <?php else: ?>
+                      <td><div class="badge badge-danger"><?php echo e(date('d-m-Y', strtotime($coupon->expired_date))); ?></div></td>
+                    <?php endif; ?>
+                    <td><?php echo e($created_by->name); ?></td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{trans('file.action')}}
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo e(trans('file.action')); ?>
+
                                 <span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                <li><button type="button" data-id="{{$coupon->id}}" data-code="{{$coupon->code}}" data-type="{{$coupon->type}}" data-amount="{{$coupon->amount}}" data-minimum_amount="{{$coupon->minimum_amount}}" data-quantity="{{$coupon->quantity}}" data-expired_date="{{$coupon->expired_date}}" class="edit-btn btn btn-link" data-toggle="modal" data-target="#editModal"><i class="dripicons-document-edit"></i> {{trans('file.edit')}}</button></li>
-                                {{ Form::open(['route' => ['coupons.destroy', $coupon->id], 'method' => 'DELETE'] ) }}
+                                <li><button type="button" data-id="<?php echo e($coupon->id); ?>" data-code="<?php echo e($coupon->code); ?>" data-type="<?php echo e($coupon->type); ?>" data-amount="<?php echo e($coupon->amount); ?>" data-minimum_amount="<?php echo e($coupon->minimum_amount); ?>" data-quantity="<?php echo e($coupon->quantity); ?>" data-expired_date="<?php echo e($coupon->expired_date); ?>" class="edit-btn btn btn-link" data-toggle="modal" data-target="#editModal"><i class="dripicons-document-edit"></i> <?php echo e(trans('file.edit')); ?></button></li>
+                                <?php echo e(Form::open(['route' => ['coupons.destroy', $coupon->id], 'method' => 'DELETE'] )); ?>
+
                                 <li>
-                                    <button type="submit" class="btn btn-link" onclick="return confirmDelete()"><i class="dripicons-trash"></i> {{trans('file.delete')}}</button>
+                                    <button type="submit" class="btn btn-link" onclick="return confirmDelete()"><i class="dripicons-trash"></i> <?php echo e(trans('file.delete')); ?></button>
                                 </li>
-                                {{ Form::close() }}
+                                <?php echo e(Form::close()); ?>
+
                             </ul>
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
             <tfoot class="tfoot active">
                 <th></th>
@@ -100,35 +103,37 @@
     <div role="document" class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Add Coupon')}}</h5>
+                <h5 id="exampleModalLabel" class="modal-title"><?php echo e(trans('file.Add Coupon')); ?></h5>
                 <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
             </div>
             <div class="modal-body">
-              <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
-                {!! Form::open(['route' => 'coupons.store', 'method' => 'post']) !!}
+              <p class="italic"><small><?php echo e(trans('file.The field labels marked with * are required input fields')); ?>.</small></p>
+                <?php echo Form::open(['route' => 'coupons.store', 'method' => 'post']); ?>
+
                   <div class="row">
                       <div class="col-md-6 form-group">
-                          <label>{{trans('file.Coupon Code')}} *</label>
+                          <label><?php echo e(trans('file.Coupon Code')); ?> *</label>
                           <div class="input-group">
-                              {{Form::text('code',null,array('required' => 'required', 'class' => 'form-control'))}}
+                              <?php echo e(Form::text('code',null,array('required' => 'required', 'class' => 'form-control'))); ?>
+
                               <div class="input-group-append">
-                                  <button type="button" class="btn btn-default btn-sm genbutton">{{trans('file.Generate')}}</button>
+                                  <button type="button" class="btn btn-default btn-sm genbutton"><?php echo e(trans('file.Generate')); ?></button>
                               </div>
                           </div>
                       </div>
                       <div class="col-md-6 form-group">
-                          <label>{{trans('file.Type')}} *</label>
+                          <label><?php echo e(trans('file.Type')); ?> *</label>
                           <select class="form-control" name="type">
                             <option value="percentage">Percentage</option>
                             <option value="fixed">Fixed Amount</option>
                           </select>
                       </div>
                       <div class="col-md-6 form-group minimum-amount">
-                          <label>{{trans('file.Minimum Amount')}} *</label>
+                          <label><?php echo e(trans('file.Minimum Amount')); ?> *</label>
                           <input type="number" name="minimum_amount" step="any" class="form-control">
                       </div>
                       <div class="col-md-6 form-group">
-                          <label>{{trans('file.Amount')}} *</label>
+                          <label><?php echo e(trans('file.Amount')); ?> *</label>
                           <div class="input-group">
                               <input type="number" name="amount" step="any" required class="form-control">&nbsp;&nbsp;
                               <div class="input-group-append mt-1">
@@ -141,14 +146,15 @@
                           <input type="number" name="quantity" step="any" required class="form-control">
                       </div>
                       <div class="col-md-6 form-group">
-                          <label>{{trans('file.Expired Date')}}</label>
+                          <label><?php echo e(trans('file.Expired Date')); ?></label>
                           <input type="text" name="expired_date" class="expired_date form-control">
                       </div>
                   </div>
                   <div class="form-group">
-                      <button type="submit" class="btn btn-primary">{{trans('file.submit')}}</button>
+                      <button type="submit" class="btn btn-primary"><?php echo e(trans('file.submit')); ?></button>
                   </div>
-                {{ Form::close() }}
+                <?php echo e(Form::close()); ?>
+
             </div>
         </div>
     </div>
@@ -158,36 +164,38 @@
   <div role="document" class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Update Coupon')}}</h5>
+              <h5 id="exampleModalLabel" class="modal-title"><?php echo e(trans('file.Update Coupon')); ?></h5>
               <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
           </div>
           <div class="modal-body">
-            <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
-              {!! Form::open(['route' => ['coupons.update', 1], 'method' => 'put']) !!}
+            <p class="italic"><small><?php echo e(trans('file.The field labels marked with * are required input fields')); ?>.</small></p>
+              <?php echo Form::open(['route' => ['coupons.update', 1], 'method' => 'put']); ?>
+
               <div class="row">
                 <div class="col-md-6 form-group">
-                    <label>{{trans('file.Coupon')}} {{trans('file.Code')}} *</label>
+                    <label><?php echo e(trans('file.Coupon')); ?> <?php echo e(trans('file.Code')); ?> *</label>
                     <div class="input-group">
                         <input type="hidden" name="coupon_id">
-                        {{Form::text('code',null,array('required' => 'required', 'class' => 'form-control'))}}
+                        <?php echo e(Form::text('code',null,array('required' => 'required', 'class' => 'form-control'))); ?>
+
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-default btn-sm genbutton">{{trans('file.Generate')}}</button>
+                            <button type="button" class="btn btn-default btn-sm genbutton"><?php echo e(trans('file.Generate')); ?></button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 form-group">
-                    <label>{{trans('file.Type')}} *</label>
+                    <label><?php echo e(trans('file.Type')); ?> *</label>
                     <select class="form-control" name="type">
                       <option value="percentage">Percentage</option>
                       <option value="fixed">Fixed Amount</option>
                     </select>
                 </div>
                 <div class="col-md-6 form-group minimum-amount">
-                    <label>{{trans('file.Minimum Amount')}} *</label>
+                    <label><?php echo e(trans('file.Minimum Amount')); ?> *</label>
                     <input type="number" name="minimum_amount" step="any" class="form-control">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label>{{trans('file.Amount')}} *</label>
+                    <label><?php echo e(trans('file.Amount')); ?> *</label>
                     <div class="input-group">
                         <input type="number" name="amount" step="any" required class="form-control">&nbsp;&nbsp;
                         <div class="input-group-append mt-1">
@@ -200,14 +208,15 @@
                     <input type="number" name="quantity" step="any" required class="form-control">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label>{{trans('file.Expired Date')}}</label>
+                    <label><?php echo e(trans('file.Expired Date')); ?></label>
                     <input type="text" name="expired_date" class="expired_date form-control">
                 </div>
               </div>
               <div class="form-group">
-                  <button type="submit" class="btn btn-primary">{{trans('file.submit')}}</button>
+                  <button type="submit" class="btn btn-primary"><?php echo e(trans('file.submit')); ?></button>
               </div>
-              {{ Form::close() }}
+              <?php echo e(Form::close()); ?>
+
           </div>
       </div>
   </div>
@@ -310,9 +319,9 @@ function confirmDelete() {
         },
         "order": [],
         'language': {
-            'lengthMenu': '_MENU_ {{trans("file.records per page")}}',
-             "info":      '<small>{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)</small>',
-            "search":  '{{trans("file.Search")}}',
+            'lengthMenu': '_MENU_ <?php echo e(trans("file.records per page")); ?>',
+             "info":      '<small><?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)</small>',
+            "search":  '<?php echo e(trans("file.Search")); ?>',
             'paginate': {
                     'previous': '<i class="dripicons-chevron-left"></i>',
                     'next': '<i class="dripicons-chevron-right"></i>'
@@ -344,7 +353,7 @@ function confirmDelete() {
         buttons: [
             {
                 extend: 'pdf',
-                text: '{{trans("file.PDF")}}',
+                text: '<?php echo e(trans("file.PDF")); ?>',
                 exportOptions: {
                     columns: ':visible:Not(.not-exported)',
                     rows: ':visible'
@@ -352,7 +361,7 @@ function confirmDelete() {
             },
             {
                 extend: 'csv',
-                text: '{{trans("file.CSV")}}',
+                text: '<?php echo e(trans("file.CSV")); ?>',
                 exportOptions: {
                     columns: ':visible:Not(.not-exported)',
                     rows: ':visible'
@@ -360,14 +369,14 @@ function confirmDelete() {
             },
             {
                 extend: 'print',
-                text: '{{trans("file.Print")}}',
+                text: '<?php echo e(trans("file.Print")); ?>',
                 exportOptions: {
                     columns: ':visible:Not(.not-exported)',
                     rows: ':visible'
                 }
             },
             {
-                text: '{{trans("file.delete")}}',
+                text: '<?php echo e(trans("file.delete")); ?>',
                 className: 'buttons-delete',
                 action: function ( e, dt, node, config ) {
                     if(user_verified == '1') {
@@ -399,11 +408,12 @@ function confirmDelete() {
             },
             {
                 extend: 'colvis',
-                text: '{{trans("file.Column visibility")}}',
+                text: '<?php echo e(trans("file.Column visibility")); ?>',
                 columns: ':gt(0)'
             },
         ]
     } );
 
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

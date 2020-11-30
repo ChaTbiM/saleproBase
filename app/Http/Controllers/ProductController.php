@@ -301,7 +301,7 @@ class ProductController extends Controller
 
     public function updateProduct(Request $request)
     {
-        if(!env('USER_VERIFIED')) {
+        if(!config('app.USER_VERIFIED')) {
             \Session::flash('not_permitted', 'This feature is disable for demo!');
         }
         else {
