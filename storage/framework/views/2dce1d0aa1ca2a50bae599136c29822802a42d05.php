@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image/png" href="{{url('/logo', $general_setting->site_logo)}}" />
-    <title>{{$general_setting->site_title}}</title>
+    <link rel="icon" type="image/png" href="<?php echo e(url('/logo', $general_setting->site_logo)); ?>" />
+    <title><?php echo e($general_setting->site_title); ?></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="<?php echo asset('/vendor/bootstrap/css/bootstrap.min.css') ?>" type="text/css">
@@ -91,10 +91,10 @@
     <div class="pos-page">
       
       <div style="display:none;" id="content" class="animate-bottom">
-          @yield('content')  
+          <?php echo $__env->yieldContent('content'); ?>  
       </div>
     </div>
-    @yield('scripts')
+    <?php echo $__env->yieldContent('scripts'); ?>
     <script type="text/javascript">
 
       function myFunction() {
