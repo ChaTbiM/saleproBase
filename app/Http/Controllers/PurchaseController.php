@@ -333,7 +333,7 @@ class PurchaseController extends Controller
                 return redirect()->back()->withErrors($v->errors());
 
             $documentName = $document->getClientOriginalName();
-            $document->move('public/documents/purchase', $documentName);
+            $document->move('/documents/purchase', $documentName);
             $data['document'] = $documentName;
         }
         //return dd($data);
@@ -502,7 +502,7 @@ class PurchaseController extends Controller
 
             $ext = pathinfo($document->getClientOriginalName(), PATHINFO_EXTENSION);
             $documentName = $data['reference_no'] . '.' . $ext;
-            $document->move('public/documents/purchase', $documentName);
+            $document->move('/documents/purchase', $documentName);
             $data['document'] = $documentName;
         }
         $item = 0;
@@ -609,7 +609,7 @@ class PurchaseController extends Controller
                 return redirect()->back()->withErrors($v->errors());
 
             $documentName = $document->getClientOriginalName();
-            $document->move('public/purchase/documents', $documentName);
+            $document->move('/purchase/documents', $documentName);
             $data['document'] = $documentName;
         }
         //return dd($data);

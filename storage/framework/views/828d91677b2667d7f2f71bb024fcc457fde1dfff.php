@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{$general_setting->site_title}}</title>
+    <title><?php echo e($general_setting->site_title); ?></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -53,39 +53,39 @@
       <div class="container">
         <div class="form-outer text-center d-flex align-items-center">
           <div class="form-inner">
-            <div class="logo"><span>{{$general_setting->site_title}}</span></div>
-            @if(session()->has('delete_message'))
-            <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session()->get('delete_message') }}</div> 
-            @endif
-            <form method="POST" action="{{ route('login') }}" id="login-form">
-              @csrf
+            <div class="logo"><span><?php echo e($general_setting->site_title); ?></span></div>
+            <?php if(session()->has('delete_message')): ?>
+            <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?php echo e(session()->get('delete_message')); ?></div> 
+            <?php endif; ?>
+            <form method="POST" action="<?php echo e(route('login')); ?>" id="login-form">
+              <?php echo csrf_field(); ?>
               <div class="form-group-material">
                 <input id="login-username" type="text" name="email" required class="input-material" value="">
-                <label for="email" class="label-material">{{trans('file.UserName')}}</label>
-                @if ($errors->has('name'))
+                <label for="email" class="label-material"><?php echo e(trans('file.UserName')); ?></label>
+                <?php if($errors->has('name')): ?>
                     <p>
-                        <strong>{{ $errors->first('name') }}</strong>
+                        <strong><?php echo e($errors->first('name')); ?></strong>
                     </p>
-                @endif
+                <?php endif; ?>
               </div>
               
               <div class="form-group-material">
                 <input id="login-password" type="password" name="password" required class="input-material" value="">
-                <label for="login-password" class="label-material">{{trans('file.Password')}}</label>
-                @if ($errors->has('name'))
+                <label for="login-password" class="label-material"><?php echo e(trans('file.Password')); ?></label>
+                <?php if($errors->has('name')): ?>
                     <p>
-                        <strong>{{ $errors->first('name') }}</strong>
+                        <strong><?php echo e($errors->first('name')); ?></strong>
                     </p>
-                @endif
+                <?php endif; ?>
               </div>
-              <button type="submit" class="btn btn-primary btn-block">{{trans('file.LogIn')}}</button>
+              <button type="submit" class="btn btn-primary btn-block"><?php echo e(trans('file.LogIn')); ?></button>
             </form>
             
-            <a href="{{ route('password.request') }}" class="forgot-pass">{{trans('file.Forgot Password?')}}</a>
-            <p>{{trans('file.Do not have an account?')}}</p><a href="{{url('register')}}" class="signup">{{trans('file.Register')}}</a>
+            <a href="<?php echo e(route('password.request')); ?>" class="forgot-pass"><?php echo e(trans('file.Forgot Password?')); ?></a>
+            <p><?php echo e(trans('file.Do not have an account?')); ?></p><a href="<?php echo e(url('register')); ?>" class="signup"><?php echo e(trans('file.Register')); ?></a>
           </div>
           <div class="copyrights text-center">
-            <p>{{trans('file.Developed By')}} <a href="http://lion-coders.com" class="external">LionCoders</a></p>
+            <p><?php echo e(trans('file.Developed By')); ?> <a href="http://lion-coders.com" class="external">LionCoders</a></p>
           </div>
         </div>
       </div>
